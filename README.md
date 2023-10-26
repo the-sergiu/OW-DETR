@@ -23,7 +23,7 @@
 
 # Installation
 
-### Requirements
+## Requirements
 
 We have trained and tested our models on `Ubuntu 16.0`, `CUDA 10.2`, `GCC 5.4`, `Python 3.7`
 
@@ -34,11 +34,24 @@ conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 cudatoolkit=10
 pip install -r requirements.txt
 ```
 
-### Backbone features
+In reality, any newer version of PyTorch installed with the compatible version of CUDA should work. Tested on Python 3.9, PyTorch version 1.13 on WSL, alongside the CUDA toolkit 11.6. 
 
-Download the self-supervised backbone from [here](https://dl.fbaipublicfiles.com/dino/dino_resnet50_pretrain/dino_resnet50_pretrain.pth) and add in `models` folder.
+## Backbone features
 
-### Compiling CUDA operators
+
+Download the self-supervised backbone from [here](https://dl.fbaipublicfiles.com/dino/dino_resnet50_pretrain/dino_resnet50_pretrain.pth).
+
+The file hierarchy should look something like this:
+- OW-DETR (this repo)
+    - All the files
+- pretrained
+    - All the model files (file ending with .pt)
+
+The hierarchy is as such because it assumes OW-DETR is a component out of many.
+
+TODO in the future: Make path customizable 
+
+## Compiling CUDA operators
 ```bash
 cd ./models/ops
 sh ./make.sh
@@ -227,23 +240,6 @@ For more training and evaluation details please check the [Deformable DETR](http
 # License
 
 This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
-
-
-# Citation
-
-If you use OW-DETR, please consider citing:
-
-    @inproceedings{gupta2021ow,
-        title={OW-DETR: Open-world Detection Transformer}, 
-        author={Gupta, Akshita and Narayan, Sanath and Joseph, KJ and 
-        Khan, Salman and Khan, Fahad Shahbaz and Shah, Mubarak},
-        booktitle={CVPR},
-        year={2022}
-    }
-
-# Contact
-
-Should you have any question, please contact :e-mail: akshita.sem.iitr@gmail.com
 
 **Acknowledgments:**
 
