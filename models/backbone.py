@@ -99,7 +99,9 @@ class Backbone(BackboneBase):
     def __init__(self, name: str,
                  train_backbone: bool,
                  return_interm_layers: bool,
-                 dilation: bool):
+                 dilation: bool,
+                 backbone_path: str = None
+                 ):
         norm_layer = FrozenBatchNorm2d
         if name == 'resnet50':
             print("resnet50")
@@ -110,7 +112,7 @@ class Backbone(BackboneBase):
             print("DINO resnet50")
             backbone = resnet50(pretrained=False, replace_stride_with_dilation=[False, False, dilation], norm_layer=norm_layer)
             if is_main_process():
-                state_dict = torch.load("../pretrained/dino_resnet50_pretrain.pth")
+                state_dict = torch.load(backbone_path)
                 backbone.load_state_dict(state_dict, strict=False)
         assert name not in ('resnet18', 'resnet34'), "number of channels are hard coded"
         super().__init__(backbone, train_backbone, return_interm_layers)
@@ -138,10 +140,10 @@ class Joiner(nn.Sequential):
         return out, pos
 
 
-def build_backbone(args):
+def build_backbone(args, backbone_path):
     position_embedding = build_position_encoding(args)
     train_backbone = args.lr_backbone > 0
     return_interm_layers = args.masks or (args.num_feature_levels > 1)
-    backbone = Backbone(args.backbone, train_backbone, return_interm_layers, args.dilation)
+    backbone = Backbone(args.backbone, train_backbone, return_interm_layers, args.dilation, backbone_path=backbone_path)
     model = Joiner(backbone, position_embedding)
     return model

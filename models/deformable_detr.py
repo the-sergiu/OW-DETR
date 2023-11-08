@@ -659,14 +659,14 @@ class MLP(nn.Module):
         return x
 
 
-def build(args):
+def build(args, backbone_path):
     num_classes = args.num_classes
     print(num_classes)
     if args.dataset == "coco_panoptic":
         num_classes = 250
     device = torch.device(args.device)
 
-    backbone = build_backbone(args)
+    backbone = build_backbone(args, backbone_path=backbone_path)
 
     transformer = build_deforamble_transformer(args)
 
